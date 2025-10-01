@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { RabbitmqService } from '../queue/rabitmq.service';
-
+import { Request } from '@prisma/client';
 /*This file can be updated. Working with database can be moved to separate 
   file (repository). It adds one more layer for working with database, but 
   it's easier to change database in the future if necessary or modify some methods*/
@@ -14,7 +14,7 @@ export class RequestsService {
     private rabbit: RabbitmqService,
   ) {}
 
-  async create(input: CreateRequestDto) {
+  async create(input: CreateRequestDto): Promise<Request> {
     const request = await this.prisma.request.create({
       data: {
         text: input.text,
@@ -24,7 +24,7 @@ export class RequestsService {
     return request;
   }
 
-  async findAll() {
+  async findAll(): Promise<Request[]> {
     return this.prisma.request.findMany();
   }
 }
