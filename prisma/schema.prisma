@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RequestStatus{
+    NEW
+    IN_PROGRESS
+    DONE
+}
+
+model Request{
+    id String @id @default(uuid())
+    text String
+    status RequestStatus @default(NEW)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
